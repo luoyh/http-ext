@@ -1,0 +1,379 @@
+
+
+<!DOCTYPE>
+<HTML>
+ <HEAD>
+  <TITLE> New Document </TITLE>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8;" />
+  <META NAME="Author" CONTENT="">
+  <META NAME="Keywords" CONTENT="">
+  <META NAME="Description" CONTENT="">
+<link href="bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet"></link>
+	<style>
+		p {
+			font-weight: bold;
+		}
+
+	</style>
+  <script src="jquery.min.js"></script>
+  <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+  <script src="ajaxfileupload.js"></script>
+  <script src="jQuery.md5.js"></script>
+  <script src="jquery.qrcode.min.js"></script>
+  <script src="jquery.jsonp.js"></script>
+  <script src="json2.js"></script>
+  <script src="v.js"></script>
+  <script src="c.js" type="text/javascript"></script>
+  <script>
+	  var logg = function(data) {
+		try {
+			if(window.console && window.console.log) {
+				console.log(data);
+			}
+		} catch(err) {}
+	};
+	window.onerror = function(msg, path, line) {
+		alert(msg + path + line);
+		return true;
+	};
+	$(function() {
+		$(document).ajaxError(function(evt, xhr) {
+			alert(xhr.status);
+			logg(xhr);
+		});
+
+		$('#btnnn').click(() => {
+			$.get('http://192.168.11.221:1111/GDDC/human/educationInfo');
+		});
+	});
+	var ciSubmit = function(url, clazz, method) {
+		var param = {};
+		//$('').click
+		$.each($('.'+clazz), function(i, e) {
+
+			if($(e).attr('type') == 'pwd') {
+				param[$(e).attr('name')] = $.md5($(e).val().trim());
+			} else {
+				param[$(e).attr('name')] = $(e).val().trim();
+			}
+		});
+		console.log($('#ciUrl').val().trim() + url);
+		console.log(param);
+		$.ajax({
+			url: $('#ciUrl').val().trim() + url,
+			type: method,
+			//dataType: 'json',
+			data: param,
+		})
+		.done(function(d) {
+			console.log(d);
+			$('#RawJson').val(d);
+			Process();
+		})
+		.fail(function() {
+			console.log("error");
+		})
+		.always(function() {
+			console.log("complete");
+		});
+
+
+	};
+
+	var upload = function() {
+		$.ajaxFileUpload({
+				url:'http://localhost/ci/user/head/update',//用于文件上传的服务器端请求地址
+				secureuri:false,//一般设置为false
+				fileElementId: 'sfile',//文件上传空间的id属性  <input type="file" id="file" name="file" />
+				data: {
+					uid: 1, password: 'xxx'
+				},
+				dataType: 'json',//返回值类型 一般设置为json
+				success: function (d, status)  //服务器成功响应处理函数
+				{
+					console.log('DONE>>>' + d);
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+					alert(XMLHttpRequest.status);
+					alert(XMLHttpRequest.readyState);
+					alert(textStatus);
+				}
+		});
+		tttid = setInterval(function() {
+			$.ajax({
+			  url: 'http://localhost/ci/upload/status',
+			  type: 'get',
+			  complete: function(xhr, textStatus) {
+			    //called when complete
+			   // console.log('c');
+			  },
+			  success: function(data, textStatus, xhr) {
+			    //called when successful
+			    if(data != 'NULL') {
+				    var d = data.split(',');
+				    //console.log(data);
+				    if(d[0]*1>=d[1]*1) clearInterval(tttid);
+				    console.log(d[0]*1/(d[1]*1))
+			    }
+			  },
+			  error: function(xhr, textStatus, errorThrown) {
+			    //called when there is an error
+			  //  console.log('e');
+			  }
+			});
+
+		}, 300);
+	};
+
+	var switchHost = function(type) {
+		if(type == 55) {
+			$('#ciUrl').val('http://192.168.0.55:8080/web/ci');
+			$('#updateHead').attr('action', 'http://192.168.0.55:8080/web/ci/user/head/update');
+			$('#serSubF').attr('action', 'http://192.168.0.55:8080/web/ci/user/ser/sub');
+		} else if(type == 123) {
+			$('#ciUrl').val('http://localhost/ci');
+			$('#updateHead').attr('action', 'http://localhost/ci/user/head/update');
+			$('#serSubF').attr('action', 'http://localhost/ci/user/ser/sub');
+		} else {
+			$('#ciUrl').val('http://120.25.226.150:8080/hj/ci');
+			$('#updateHead').attr('action', 'http://120.25.226.150:8080/hj/ci/user/head/update');
+			$('#serSubF').attr('action', 'http://120.25.226.150:8080/hj/ci/user/ser/sub');
+		}
+	};
+
+	var apisSubmit = function() {
+		var param = {};
+		$.each($('.apiParameters'), function(i, e) {
+			//param[$(e)]
+			var inputs = $(e).find('input');
+			if(inputs.eq(0).val().trim() == '') return true;
+			if($(e).find('select').eq(0).val() == 1) {
+				param[inputs.eq(0).val().trim()] = $.md5(inputs.eq(1).val().trim());
+			} else {
+				param[inputs.eq(0).val().trim()] = inputs.eq(1).val().trim();
+			}
+		});
+		$.ajax({
+			url: $('#apiUrl').val().trim(),
+			type: $('#apiMethod').val(),
+			dataType: 'text',
+			//jsonp: 'callback',
+			data: param,
+		})
+		.done(function(d) {
+			console.log(d);
+			$('#RawJson').val(d);
+			Process();
+		})
+		.fail(function() {
+			console.log("error");
+		})
+		.always(function() {
+			console.log("complete");
+		});
+
+	};
+
+	var tenToHex = function() {
+		var val = $.trim($('#tenInput').val());
+		if(val == '') return;
+		var vals = val.split(' ');
+		var ret = '';
+		for(var i = 0; i < vals.length; i ++) {
+			ret += (vals[i]*1).toString(16);
+		}
+		$('#tenInput').val(ret);
+	};
+
+	var jsonFormat = function() {
+		$('#RawJson').val($('#jsonTxt').val());
+		Process();
+	};
+
+	var apisAdd = function(){
+		$('#apis').append('<div class=\'form-group apiParameters\'><label class=\'col-md-offset-1 col-md-1 control-label\'>KEY：</label><div class=\'col-md-3\'><input type=\'text\' class=\'form-control\'></div><label class=\'col-md-1 control-label\'>VALUE：</label><div class=\'col-md-3\'><input type=\'text\' class=\'form-control\'></div><div class=\'col-md-2\'><select  class=\'form-control\'><option value=\'0\'>文本</option><option value=\'1\'>密码</option></select></div><button onclick=\'$(this).parent().remove()\' class=\'btn btn-warning\'><span class=\'glyphicon glyphicon-minus\'></span></button></div>');
+		return false;
+	};
+
+	var qrSubmit = function() {
+		$('#qrcode').empty();
+		$('#qrcode').qrcode($('#qrcodeTxt').val());
+	};
+	</script>
+ </HEAD>
+
+ <BODY>
+ 	
+	<div style="width: 50%; height: 100%; float: left; ">
+		<div class="panel panel-primary">
+			<div class="panel-heading">自定义HTTP调用！！！！！ </div>
+			<p></p>
+			<form class="form-horizontal" id="apis">
+				<div class="form-group">
+					<label class="col-md-2 control-label">地址：</label>
+					<div class="col-md-10">
+						<input class="form-control" type="text" id="apiUrl"  value="http://120.25.226.150:8080/hj/ci" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-2 control-label">
+						方法：
+					</label>
+					<div class="col-md-10">
+						<select class="form-control" id="apiMethod">
+							<option value="GET">GET</option>
+							<option value="POST">POST</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-2 control-label">
+						参数： 
+					</label>
+					<div class="col-md-10">
+						<button type="button" class="btn btn-primary" onclick="apisAdd()">增加参数</button>
+						<input class="col-md-offset-5 btn btn-success" type="button" onclick="apisSubmit()" value="SUBMIT" />
+					</div>
+				</div>
+				<div class="form-group apiParameters">
+					<label class="col-md-offset-1 col-md-1 control-label">
+						KEY：
+					</label>
+					<div class="col-md-3">
+						<input type="text" class="form-control">
+					</div>
+					<label class="col-md-1 control-label">
+						VALUE：
+					</label>
+					<div class="col-md-3">
+						<input type="text" class="form-control">
+					</div>
+					<div class="col-md-2">
+						<select  class="form-control">
+							<option value="0">文本</option>
+							<option value="1">密码</option>
+						</select>
+					</div>
+					<button onclick="$(this).parent().remove()" class="btn btn-warning"><span class="glyphicon glyphicon-minus"></span></button>
+				</div>
+			</form>
+			
+		</div>
+		<p></p>
+		<div class="panel panel-primary">
+			<div class="panel-heading">MD5加密</div>
+			<div class="panel-body">
+				<div class="form-horizontal">
+					<div class="col-md-10">
+						<input  id="md5Input" type="text" class="form-control">
+					</div>
+					<input onclick="$('#md5Input').val($.md5($('#md5Input').val().trim()))" value="加密" type="button" class="btn btn-success col-md-2">
+				</div>
+			</div>
+		</div>
+		<p></p>
+		<div class="panel panel-primary">
+			<div class="panel-heading">10进制转16进制</div>
+			<div class="panel-body">
+				<div class="col-md-7">
+					<input type="text" id="tenInput" class="form-control">
+				</div>
+				<input onclick="tenToHex()" type="button" class="btn btn-success col-md-2" value="转换" >
+			</div>
+		</div>
+		
+		<p></p>
+		<div class="panel panel-primary">
+			<div class="panel-heading">JSON格式化</div>
+			<div class="panel-body">
+				<div class="col-md-10">
+					<textarea id="jsonTxt" style="height: 100px;" type="text" class="form-control"></textarea>
+				</div>
+				<input onclick="jsonFormat()" type="button" class="btn btn-success col-md-2" value="格式化" >
+			</div>
+		</div>
+		<p></p>
+		<div class="panel panel-primary">
+			<div class="panel-heading">生成二维码</div>
+			<div class="panel-body">
+				<div class="col-md-5">
+					<textarea id="qrcodeTxt" style="height: 100px;" type="text" id="tenInput" class="form-control"></textarea>
+				</div>
+				<div class="col-md-5" id="qrcode"></div>
+				<input type="button" value="生成" onclick="qrSubmit()" class="btn btn-success">
+			</div>
+		</div>
+		<div id="gen" class="panel panel-primary">
+			
+		</div>
+		
+		<p></p>
+		<div class="panel panel-primary">
+			<div class="panel-heading">生成身份证</div>
+			<div class="panel-body">
+				<div class="col-md-5">
+						<input  id="identityCode" type="text" class="form-control">
+				</div>
+				<div class="col-md-5" id="qrcode"></div>
+				<input type="button" value="生成身份证" onclick="javascript:$('#identityCode').val(generatorIdentityCard());" class="btn btn-success">
+			</div>
+		</div>
+
+		<p>	</p>
+		<div class="panel panel-primary">
+			<button class="btn btn-warning" id="btnnn">BTN</button>
+		</div>
+	</div>
+
+
+
+
+
+	<div id="result" style="overflow: auto; position: fixed; width: 50%; height: 100%; left: 50%; outline: 1px solid #ccc;">
+		<textarea id="RawJson" style="display: none;"></textarea>
+
+
+		<div id="ControlsRow">
+		  <span id="TabSizeHolder">
+		    缩进量
+		    <select id="TabSize" onchange="TabSizeChanged()">
+		      <option value="1">1</option>
+		      <option value="2" selected="true">2</option>
+		      <option value="3">3</option>
+		      <option value="4">4</option>
+		      <option value="5">5</option>
+		      <option value="6">6</option>
+		    </select>
+		  </span>
+		  <label for="QuoteKeys">
+		    <input type="checkbox" id="QuoteKeys" onclick="QuoteKeysClicked()" checked="true" />
+		    引号
+		  </label>&nbsp;
+		  <a href="javascript:void(0);" onclick="SelectAllClicked()">全选</a>
+		  &nbsp;
+		  <span id="CollapsibleViewHolder" >
+		      <label for="CollapsibleView">
+		        <input type="checkbox" id="CollapsibleView" onclick="CollapsibleViewClicked()" checked="true" />
+		        显示控制
+		      </label>
+		  </span>
+		  <span id="CollapsibleViewDetail">
+		    <a href="javascript:void(0);" onclick="ExpandAllClicked()">展开</a>
+		    <a href="javascript:void(0);" onclick="CollapseAllClicked()">叠起</a>
+		    <a href="javascript:void(0);" onclick="CollapseLevel(3)">2级</a>
+		    <a href="javascript:void(0);" onclick="CollapseLevel(4)">3级</a>
+		    <a href="javascript:void(0);" onclick="CollapseLevel(5)">4级</a>
+		    <a href="javascript:void(0);" onclick="CollapseLevel(6)">5级</a>
+		    <a href="javascript:void(0);" onclick="CollapseLevel(7)">6级</a>
+		    <a href="javascript:void(0);" onclick="CollapseLevel(8)">7级</a>
+		    <a href="javascript:void(0);" onclick="CollapseLevel(9)">8级</a>
+		  </span>
+		</div>
+		<div id="Canvas" class="Canvas"></div>
+	</div>
+
+
+
+ </BODY>
+<script type="text/javascript" src="m.js"></script>
+</HTML>

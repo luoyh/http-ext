@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Toolkit</title>
+	<link href="bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet"></link>
+  	<script src="jquery.min.js"></script>
+  	<script src="bootstrap/js/bootstrap.min.js"></script>
+  	<script src="c.js"></script>
+  	<script src="g.js"></script>
+  	<style>
+  		.center {
+  			text-align: center;
+  		}
+  	</style>
+</head>
+<body>
+	
+	
+			<button class="btn btn-warning" id="btnnn">BTN</button>
+	<div style="overflow: auto; position: fixed; width: 50%; height: 100%; outline: 1px solid #ccc;">
+
+		<div class="panel panel-primary">
+			<div class="panel-heading">自定义HTTP调用！！！！！ </div>
+			<p></p>
+			<form class="form-horizontal" id="apis"  style="margin-left: 10px; margin-right: 10px;">
+				<div class="form-group">
+					<div class="col-md-2">
+						<select class="form-control api-method">
+							<option value="GET">GET</option>
+							<option value="POST">POST</option>
+						</select>
+					</div>
+					<div class="col-md-7">
+						<input class="form-control" type="text" id="apiUrl"  value="" />
+					</div>
+					<div class="col-md-3">
+						<button class="btn btn-default params" type="button">Params</button>
+						<button class="btn btn-primary send" type="button">Send</button>
+					</div>
+				</div>
+				<div class="params-body" data-hide="0" style="display: none;">
+					<div class="form-group">
+						<div class="col-md-5 center">
+							Key
+						</div>
+						<div class="col-md-5 center">
+							Value
+						</div>
+					</div>
+					<div class="form-group api-params">
+						<div class="col-md-5">
+							<input type="text" class="form-control">
+						</div>
+						<div class="col-md-5">
+							<input type="text" class="form-control">
+						</div>
+						<div class="col-md-2">
+							<button type="button" class="btn btn-success plus"><span class="glyphicon glyphicon-plus"></span></button>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-md-12">
+					  <ul class="nav nav-tabs" role="tablist">
+					    <li role="presentation" class="active"><a href="#header" class="tab-header" aria-controls="header" role="tab" data-toggle="tab">Header</a></li>
+					    <li role="presentation"><a href="#body" class="tab-body btn disabled" aria-controls="body" role="tab" data-toggle="tab">Body</a></li>
+					  </ul>
+
+					  <!-- Tab panes -->
+					  <div class="tab-content">
+					    <div role="tabpanel" class="tab-pane active" id="header">
+					    	<div class="form-group">
+								<div class="col-md-5 center">
+									Key
+								</div>
+								<div class="col-md-5 center">
+									Value
+								</div>
+							</div>
+							<div class="form-group api-params">
+								<div class="col-md-5">
+									<input type="text" class="form-control">
+								</div>
+								<div class="col-md-5">
+									<input type="text" class="form-control">
+								</div>
+								<div class="col-md-2">
+									<button type="button" class="btn btn-success plus-header"><span class="glyphicon glyphicon-plus"></span></button>
+								</div>
+							</div>
+					    </div>
+					    <div role="tabpanel" class="tab-pane" id="body">.body..</div>
+					  </div>
+					</div>
+				</div>
+				
+			</form>
+			
+		</div>
+
+	</div>
+
+
+
+
+	<div id="result" style="overflow: auto; position: fixed; width: 50%; height: 100%; left: 50%; outline: 1px solid #ccc;">
+		<textarea id="RawJson" style="display: none;"></textarea>
+
+
+		<div id="ControlsRow">
+		  <span id="TabSizeHolder">
+		    缩进量
+		    <select id="TabSize">
+		      <option value="1" selected="true">1</option>
+		      <option value="2">2</option>
+		      <option value="3">3</option>
+		      <option value="4">4</option>
+		      <option value="5">5</option>
+		      <option value="6">6</option>
+		    </select>
+		  </span>
+		  <label for="QuoteKeys">
+		    <input type="checkbox" id="QuoteKeys" checked="true" />
+		    引号
+		  </label>&nbsp;
+		  <a href="###" id="chooise_all">全选</a>
+		  &nbsp;
+		  <span id="CollapsibleViewHolder" >
+		      <label for="CollapsibleView">
+		        <input type="checkbox" id="CollapsibleView" checked="true" />
+		        显示控制
+		      </label>
+		  </span>
+		  <span id="CollapsibleViewDetail">
+		    <a href="###" id="expand">展开</a>
+		    <a href="###" id="collapse" >叠起</a>
+		    <a href="###" class="collapse-level" data-level="2">2级</a>
+		    <a href="###" class="collapse-level" data-level="3">3级</a>
+		    <a href="###" class="collapse-level" data-level="4">4级</a>
+		    <a href="###" class="collapse-level" data-level="5">5级</a>
+		    <a href="###" class="collapse-level" data-level="6">6级</a>
+		    <a href="###" class="collapse-level" data-level="7">7级</a>
+		    <a href="###" class="collapse-level" data-level="8">8级</a>
+		  </span>
+		</div>
+		<div id="Canvas" class="Canvas"></div>
+	</div>
+
+
+</body>
+</html>

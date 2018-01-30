@@ -1,0 +1,38 @@
+{
+  "manifest_version": 2,
+
+  "name": "Simple HTTP request tool like PostMan",
+  "description": "Learn....",
+  "version": "1.0",
+  "background": {
+  //   "scripts": [
+  //   	"jquery.min.js",
+		// "bootstrap/js/bootstrap.min.js",
+		// "ajaxfileupload.js",
+		// "jQuery.md5.js",
+		// "jquery.qrcode.min.js",
+		// "jquery.jsonp.js",
+		// "json2.js",
+		// "v.js",
+		// "c.js",
+		// "m.js"
+  //   ],
+   // "page": "tools.html"
+  },
+  "browser_action": {
+    "default_icon": "icon.png"
+    //"default_popup": "tools.html"
+  },
+  //"options_page": "tools.html",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "http://*/",
+    "https://*/"
+  ],
+  //"content_security_policy": "script-src 'self'; object-src 'self'",
+  "content_security_policy": "script-src 'self' 'unsafe-inline' 'unsafe-eval'; object-src 'self'",
+  "chrome_url_overrides": {
+    "newtab": "man.html"
+  }
+}
