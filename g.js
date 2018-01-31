@@ -1,6 +1,7 @@
 $(() => {
     $('.send').click(evt => {
         layer.load();
+        $('.CodeContainer').empty();
         if ('GET' == $('.api-method').val()) { // get
             doGet();
         } else { // post
@@ -28,7 +29,7 @@ $(() => {
                 headers[$(e).find('.key').val()] = $(e).find('.value').val();
             }
         });
-        if ($('input[name="bodyOptions"]:checked').val() && 'POST' == method) {
+        if ($('input[name="bodyOptions"]:checked').val() && 'POST' == method && !headers['Content-Type']) {
             headers['Content-Type'] = $('.body-raw-content-type').val();
         }
         let params = '',
@@ -48,11 +49,17 @@ $(() => {
         }
         console.log(settings);
         $.ajax(settings).done(r => {
-            $('#RawJson').val(JSON.stringify(r));
-            Process();
+            fs(JSON.stringify(r));
+        }).fail((xhr, status, err) => {
+        	fs(xhr.responseText);
+        	$('.CodeContainer').css('color', 'red');
         }).always(() => {
             layer.closeAll();
         });
+    };
+    var fs = r => {
+        $('#RawJson').val(r);
+        Process();
     };
     $('#TabSize').change(() => {
         TabSizeChanged();
