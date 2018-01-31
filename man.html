@@ -1,193 +1,265 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>Toolkit</title>
-	<link href="bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet"></link>
-  	<script src="jquery.min.js"></script>
-  	<script src="bootstrap/js/bootstrap.min.js"></script>
-  	<script src="layer/layer.js"></script>
-  	<script src="c.js"></script>
-  	<script src="g.js"></script>
-  	<style>
-  		.center {
-  			text-align: center;
-  		}
-  	</style>
-</head>
-<body>
-	
-	
-			<button class="btn btn-warning" id="btnnn">BTN</button>
-	<div style="overflow: auto; position: fixed; width: 50%; height: 100%; outline: 1px solid #ccc;">
-
-		<div class="panel panel-primary">
-			<div class="panel-heading">自定义HTTP调用！！！！！ </div>
-			<p></p>
-			<form class="form-horizontal" id="apis"  style="margin-left: 10px; margin-right: 10px;">
-				<div class="form-group">
-					<div class="col-md-2">
-						<select class="form-control api-method">
-							<option value="GET">GET</option>
-							<option value="POST">POST</option>
-						</select>
-					</div>
-					<div class="col-md-7">
-						<input class="form-control" type="text" id="api_url"  value="" />
-					</div>
-					<div class="col-md-3">
-						<button class="btn btn-default params" type="button">Params</button>
-						<button class="btn btn-primary send" type="button">Send</button>
-					</div>
-				</div>
-				<div class="params-body" data-hide="0" style="display: none;">
-					<div class="form-group">
-						<div class="col-md-5 center">
-							Key
-						</div>
-						<div class="col-md-5 center">
-							Value
-						</div>
-					</div>
-					<div class="form-group api-params">
-						<div class="col-md-5">
-							<input type="text" class="form-control key">
-						</div>
-						<div class="col-md-5">
-							<input type="text" class="form-control value">
-						</div>
-						<div class="col-md-2">
-							<button type="button" class="btn btn-success plus" data-plus="0"><span class="glyphicon glyphicon-plus"></span></button>
-						</div>
-					</div>
-				</div>
-				<div class="form-group">
-					<div class="col-md-12">
-					  <ul class="nav nav-tabs" role="tablist">
-					    <li role="presentation" class="active"><a href="#header" class="tab-header" aria-controls="header" role="tab" data-toggle="tab">Header</a></li>
-					    <li role="presentation"><a href="#body" class="tab-body btn disabled" aria-controls="body" role="tab" data-toggle="tab">Body</a></li>
-					  </ul>
-
-					  <!-- Tab panes -->
-					  <div class="tab-content">
-					    <div role="tabpanel" class="tab-pane active" id="header">
-					    	<div class="form-group">
-								<div class="col-md-5 center">
-									Key
-								</div>
-								<div class="col-md-5 center">
-									Value
-								</div>
-							</div>
-							<div class="form-group api-params">
-								<div class="col-md-5">
-									<input type="text" class="form-control key">
-								</div>
-								<div class="col-md-5">
-									<input type="text" class="form-control value">
-								</div>
-								<div class="col-md-2">
-									<button type="button" class="btn btn-success plus" data-plus="1"><span class="glyphicon glyphicon-plus"></span></button>
-								</div>
-							</div>
-					    </div>
-					    <div role="tabpanel" class="tab-pane" id="body">
-					    	<div class="col-md-12">
-								<div class="radio">
-								  <label class="col-md-3 col-md-offset-1">
-								    <input type="radio" name="bodyOptions" value="0" checked>
-								    form-data
-								  </label>
-								  <label class="col-md-3">
-								  	<input type="radio" name="bodyOptions" value="1">
-								    raw
-								  </label>
-								  <div class="col-md-4">
-								  	<select class="form-control body-raw body-raw-content-type" style="display: none;">
-										<option value="text/*">Text</option>
-										<option value="text/plain">Text(text/plain)</option>
-										<option value="application/json">JSON(application/json)</option>
-										<option value="application/javascription">Javascription(application/javascription)</option>
-										<option value="application/xml">XML(application/xml)</option>
-										<option value="text/xml">XML(text/xml)</option>
-										<option value="text/html">HTML(text/html)</option>
-									</select>
-								  </div>
-								</div>
-					    	</div>
-					    	<div class="col-md-12 body-form-data" style="margin-top:10px;">
-					    		<div class="form-group api-params">
-									<div class="col-md-5">
-										<input type="text" class="form-control key">
-									</div>
-									<div class="col-md-5">
-										<input type="text" class="form-control value">
-									</div>
-									<div class="col-md-2">
-										<button type="button" class="btn btn-success plus" data-plus="2"><span class="glyphicon glyphicon-plus"></span></button>
-									</div>
-								</div>
-					    	</div>
-					    	<div class="col-md-12 body-raw" style="display: none; margin-top:10px;">
-					    		<textarea class="col-md-12 body-raw-value" cols="30" rows="10" style="resize: none;"></textarea>
-					    	</div>
-					    </div>
-					  </div>
-					</div>
-				</div>
-				
-			</form>
-			
-		</div>
-
-	</div>
-
-
-
-
-	<div id="result" style="overflow: auto; position: fixed; width: 50%; height: 100%; left: 50%; outline: 1px solid #ccc;">
-		<textarea id="RawJson" style="display: none;"></textarea>
-
-
-		<div id="ControlsRow">
-		  <span id="TabSizeHolder">
-		    缩进量
-		    <select id="TabSize">
-		      <option value="1" selected="true">1</option>
-		      <option value="2">2</option>
-		      <option value="3">3</option>
-		      <option value="4">4</option>
-		      <option value="5">5</option>
-		      <option value="6">6</option>
-		    </select>
-		  </span>
-		  <label for="QuoteKeys">
-		    <input type="checkbox" id="QuoteKeys" checked="true" />
-		    引号
-		  </label>&nbsp;
-		  <a href="###" id="chooise_all">全选</a>
-		  &nbsp;
-		  <span id="CollapsibleViewHolder" >
-		      <label for="CollapsibleView">
-		        <input type="checkbox" id="CollapsibleView" checked="true" />
-		        显示控制
-		      </label>
-		  </span>
-		  <span id="CollapsibleViewDetail">
-		    <a href="###" id="expand">展开</a>
-		    <a href="###" id="collapse" >叠起</a>
-		    <a href="###" class="collapse-level" data-level="2">2级</a>
-		    <a href="###" class="collapse-level" data-level="3">3级</a>
-		    <a href="###" class="collapse-level" data-level="4">4级</a>
-		    <a href="###" class="collapse-level" data-level="5">5级</a>
-		    <a href="###" class="collapse-level" data-level="6">6级</a>
-		    <a href="###" class="collapse-level" data-level="7">7级</a>
-		    <a href="###" class="collapse-level" data-level="8">8级</a>
-		  </span>
-		</div>
-		<div id="Canvas" class="Canvas"></div>
-	</div>
-
-
-</body>
+    <head>
+        <meta charset="utf-8">
+            <title>Toolkit</title>
+            <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+            <script src="jquery.min.js"></script>
+            <script src="bootstrap/js/bootstrap.min.js"></script>
+            <script src="layer/layer.js"></script>
+            <script src="c.js"></script>
+            <script src="g.js"></script>
+            <style>
+                .center {
+		  			text-align: center;
+		  		}
+            </style>
+        </meta>
+    </head>
+    <body>
+        <button class="btn btn-warning" id="btnnn">
+            BTN
+        </button>
+        <div style="overflow: auto; position: fixed; width: 50%; height: 100%; outline: 1px solid #ccc;">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    自定义HTTP调用！！！！！
+                </div>
+                <p>
+                </p>
+                <form class="form-horizontal" id="apis" style="margin-left: 10px; margin-right: 10px;">
+                    <div class="form-group">
+                        <div class="col-md-2">
+                            <select class="form-control api-method">
+                                <option value="GET">
+                                    GET
+                                </option>
+                                <option value="POST">
+                                    POST
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-7">
+                            <input class="form-control" id="api_url" type="text" value=""/>
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-default params" type="button">
+                                Params
+                            </button>
+                            <button class="btn btn-primary send" type="button">
+                                Send
+                            </button>
+                        </div>
+                    </div>
+                    <div class="params-body" data-hide="0" style="display: none;">
+                        <div class="form-group">
+                            <div class="col-md-5 center">
+                                Key
+                            </div>
+                            <div class="col-md-5 center">
+                                Value
+                            </div>
+                        </div>
+                        <div class="form-group api-params">
+                            <div class="col-md-5">
+                                <input class="form-control key" type="text">
+                                </input>
+                            </div>
+                            <div class="col-md-5">
+                                <input class="form-control value" type="text">
+                                </input>
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-success plus" data-plus="0" type="button">
+                                    <span class="glyphicon glyphicon-plus">
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li class="active" role="presentation">
+                                    <a aria-controls="header" class="tab-header" data-toggle="tab" href="#header" role="tab">
+                                        Header
+                                    </a>
+                                </li>
+                                <li role="presentation">
+                                    <a aria-controls="body" class="tab-body btn disabled" data-toggle="tab" href="#body" role="tab">
+                                        Body
+                                    </a>
+                                </li>
+                            </ul>
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="header" role="tabpanel">
+                                    <div class="form-group">
+                                        <div class="col-md-5 center">
+                                            Key
+                                        </div>
+                                        <div class="col-md-5 center">
+                                            Value
+                                        </div>
+                                    </div>
+                                    <div class="form-group api-params">
+                                        <div class="col-md-5">
+                                            <input class="form-control key" type="text">
+                                            </input>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <input class="form-control value" type="text">
+                                            </input>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button class="btn btn-success plus" data-plus="1" type="button">
+                                                <span class="glyphicon glyphicon-plus">
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="body" role="tabpanel">
+                                    <div class="col-md-12">
+                                        <div class="radio">
+                                            <label class="col-md-3 col-md-offset-1">
+                                                <input checked="" name="bodyOptions" type="radio" value="0">
+                                                    form-data
+                                                </input>
+                                            </label>
+                                            <label class="col-md-3">
+                                                <input name="bodyOptions" type="radio" value="1">
+                                                    raw
+                                                </input>
+                                            </label>
+                                            <div class="col-md-4">
+                                                <select class="form-control body-raw body-raw-content-type" style="display: none;">
+                                                    <option value="text/*">
+                                                        Text
+                                                    </option>
+                                                    <option value="text/plain">
+                                                        Text(text/plain)
+                                                    </option>
+                                                    <option value="application/json">
+                                                        JSON(application/json)
+                                                    </option>
+                                                    <option value="application/javascription">
+                                                        Javascription(application/javascription)
+                                                    </option>
+                                                    <option value="application/xml">
+                                                        XML(application/xml)
+                                                    </option>
+                                                    <option value="text/xml">
+                                                        XML(text/xml)
+                                                    </option>
+                                                    <option value="text/html">
+                                                        HTML(text/html)
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 body-form-data" style="margin-top:10px;">
+                                        <div class="form-group api-params">
+                                            <div class="col-md-5">
+                                                <input class="form-control key" type="text">
+                                                </input>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <input class="form-control value" type="text">
+                                                </input>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <button class="btn btn-success plus" data-plus="2" type="button">
+                                                    <span class="glyphicon glyphicon-plus">
+                                                    </span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 body-raw" style="display: none; margin-top:10px;">
+                                        <textarea class="col-md-12 body-raw-value" cols="30" rows="10" style="resize: none;">
+                                        </textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div id="result" style="overflow: auto; position: fixed; width: 50%; height: 100%; left: 50%; outline: 1px solid #ccc;">
+            <textarea id="RawJson" style="display: none;">
+            </textarea>
+            <div id="ControlsRow">
+                <span id="TabSizeHolder">
+                    缩进量
+                    <select id="TabSize">
+                        <option selected="true" value="1">
+                            1
+                        </option>
+                        <option value="2">
+                            2
+                        </option>
+                        <option value="3">
+                            3
+                        </option>
+                        <option value="4">
+                            4
+                        </option>
+                        <option value="5">
+                            5
+                        </option>
+                        <option value="6">
+                            6
+                        </option>
+                    </select>
+                </span>
+                <label for="QuoteKeys">
+                    <input checked="true" id="QuoteKeys" type="checkbox"/>
+                    引号
+                </label>
+                <a href="###" id="chooise_all">
+                    全选
+                </a>
+                <span id="CollapsibleViewHolder">
+                    <label for="CollapsibleView">
+                        <input checked="true" id="CollapsibleView" type="checkbox"/>
+                        显示控制
+                    </label>
+                </span>
+                <span id="CollapsibleViewDetail">
+                    <a href="###" id="expand">
+                        展开
+                    </a>
+                    <a href="###" id="collapse">
+                        叠起
+                    </a>
+                    <a class="collapse-level" data-level="2" href="###">
+                        2级
+                    </a>
+                    <a class="collapse-level" data-level="3" href="###">
+                        3级
+                    </a>
+                    <a class="collapse-level" data-level="4" href="###">
+                        4级
+                    </a>
+                    <a class="collapse-level" data-level="5" href="###">
+                        5级
+                    </a>
+                    <a class="collapse-level" data-level="6" href="###">
+                        6级
+                    </a>
+                    <a class="collapse-level" data-level="7" href="###">
+                        7级
+                    </a>
+                    <a class="collapse-level" data-level="8" href="###">
+                        8级
+                    </a>
+                </span>
+            </div>
+            <div class="Canvas" id="Canvas">
+            </div>
+        </div>
+    </body>
 </html>
