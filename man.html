@@ -6,6 +6,7 @@
 	<link href="bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet"></link>
   	<script src="jquery.min.js"></script>
   	<script src="bootstrap/js/bootstrap.min.js"></script>
+  	<script src="layer/layer.js"></script>
   	<script src="c.js"></script>
   	<script src="g.js"></script>
   	<style>
@@ -32,7 +33,7 @@
 						</select>
 					</div>
 					<div class="col-md-7">
-						<input class="form-control" type="text" id="apiUrl"  value="" />
+						<input class="form-control" type="text" id="api_url"  value="" />
 					</div>
 					<div class="col-md-3">
 						<button class="btn btn-default params" type="button">Params</button>
@@ -50,13 +51,13 @@
 					</div>
 					<div class="form-group api-params">
 						<div class="col-md-5">
-							<input type="text" class="form-control">
+							<input type="text" class="form-control key">
 						</div>
 						<div class="col-md-5">
-							<input type="text" class="form-control">
+							<input type="text" class="form-control value">
 						</div>
 						<div class="col-md-2">
-							<button type="button" class="btn btn-success plus"><span class="glyphicon glyphicon-plus"></span></button>
+							<button type="button" class="btn btn-success plus" data-plus="0"><span class="glyphicon glyphicon-plus"></span></button>
 						</div>
 					</div>
 				</div>
@@ -80,17 +81,57 @@
 							</div>
 							<div class="form-group api-params">
 								<div class="col-md-5">
-									<input type="text" class="form-control">
+									<input type="text" class="form-control key">
 								</div>
 								<div class="col-md-5">
-									<input type="text" class="form-control">
+									<input type="text" class="form-control value">
 								</div>
 								<div class="col-md-2">
-									<button type="button" class="btn btn-success plus-header"><span class="glyphicon glyphicon-plus"></span></button>
+									<button type="button" class="btn btn-success plus" data-plus="1"><span class="glyphicon glyphicon-plus"></span></button>
 								</div>
 							</div>
 					    </div>
-					    <div role="tabpanel" class="tab-pane" id="body">.body..</div>
+					    <div role="tabpanel" class="tab-pane" id="body">
+					    	<div class="col-md-12">
+								<div class="radio">
+								  <label class="col-md-3 col-md-offset-1">
+								    <input type="radio" name="bodyOptions" value="0" checked>
+								    form-data
+								  </label>
+								  <label class="col-md-3">
+								  	<input type="radio" name="bodyOptions" value="1">
+								    raw
+								  </label>
+								  <div class="col-md-4">
+								  	<select class="form-control body-raw body-raw-content-type" style="display: none;">
+										<option value="text/*">Text</option>
+										<option value="text/plain">Text(text/plain)</option>
+										<option value="application/json">JSON(application/json)</option>
+										<option value="application/javascription">Javascription(application/javascription)</option>
+										<option value="application/xml">XML(application/xml)</option>
+										<option value="text/xml">XML(text/xml)</option>
+										<option value="text/html">HTML(text/html)</option>
+									</select>
+								  </div>
+								</div>
+					    	</div>
+					    	<div class="col-md-12 body-form-data" style="margin-top:10px;">
+					    		<div class="form-group api-params">
+									<div class="col-md-5">
+										<input type="text" class="form-control key">
+									</div>
+									<div class="col-md-5">
+										<input type="text" class="form-control value">
+									</div>
+									<div class="col-md-2">
+										<button type="button" class="btn btn-success plus" data-plus="2"><span class="glyphicon glyphicon-plus"></span></button>
+									</div>
+								</div>
+					    	</div>
+					    	<div class="col-md-12 body-raw" style="display: none; margin-top:10px;">
+					    		<textarea class="col-md-12 body-raw-value" cols="30" rows="10" style="resize: none;"></textarea>
+					    	</div>
+					    </div>
 					  </div>
 					</div>
 				</div>
