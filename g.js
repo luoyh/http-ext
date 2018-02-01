@@ -46,8 +46,7 @@ $(() => {
             'headers': headers,
             'data': data,
             'timeout': 10000
-        }
-        console.log(settings);
+        };
         $.ajax(settings).done(r => {
             fs(JSON.stringify(r));
         }).fail((xhr, status, err) => {
